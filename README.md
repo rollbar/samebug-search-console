@@ -1,3 +1,6 @@
+This project is not mature enough, it can't paginate results.
+See the [Samebug Analytics](https://github.com/samebug/samebug-analytics) repository instead.
+
 # Install
 
 ```

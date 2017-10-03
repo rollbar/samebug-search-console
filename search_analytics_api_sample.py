@@ -75,14 +75,16 @@ def main(argv):
   request = {
       'startDate': flags.start_date,
       'endDate': flags.end_date,
-      'dimensions': ['query', 'page', 'country', 'date'],
-      'rowLimit': 5000
+      'dimensions': ['query', 'page', 'country'],
+      'startRow': 1000,
+      'rowLimit': 10
       
   }
   response = execute_request(service, flags.property_uri, request)
   with open('result1.json', 'w') as f:
     json.dump(response, f)
-  print_table(response, 'results')  
+  rows = response['rows']
+  print "Got rows".format(len(rows))
 
 def execute_request(service, property_uri, request):
   """Executes a searchAnalytics.query request.
