@@ -68,81 +68,21 @@ def main(argv):
       'dimensions': ['date']
   }
   response = execute_request(service, flags.property_uri, request)
-  with open('/tmp/result.json', 'w') as f:
-      json.dump(response, f)
   print_table(response, 'Available dates')
 
-  # Get totals for the date range.
-  request = {
-      'startDate': flags.start_date,
-      'endDate': flags.end_date
-  }
-  response = execute_request(service, flags.property_uri, request)
-  print_table(response, 'Totals')
-
-  # Get top 10 queries for the date range, sorted by click count, descending.
+ 
+  # Get top queries for the date range, sorted by click count, descending.
   request = {
       'startDate': flags.start_date,
       'endDate': flags.end_date,
-      'dimensions': ['query'],
-      'rowLimit': 10
+      'dimensions': ['query', 'page', 'country', 'date'],
+      'rowLimit': 5000
+      
   }
   response = execute_request(service, flags.property_uri, request)
-  print_table(response, 'Top Queries')
-
-  # Get top 11-20 mobile queries for the date range, sorted by click count, descending.
-  request = {
-      'startDate': flags.start_date,
-      'endDate': flags.end_date,
-      'dimensions': ['query'],
-      'dimensionFilterGroups': [{
-          'filters': [{
-              'dimension': 'device',
-              'expression': 'mobile'
-          }]
-      }],
-      'rowLimit': 10,
-      'startRow': 10
-  }
-  response = execute_request(service, flags.property_uri, request)
-  print_table(response, 'Top 11-20 Mobile Queries')
-
-  # Get top 10 pages for the date range, sorted by click count, descending.
-  request = {
-      'startDate': flags.start_date,
-      'endDate': flags.end_date,
-      'dimensions': ['page'],
-      'rowLimit': 10
-  }
-  response = execute_request(service, flags.property_uri, request)
-  print_table(response, 'Top Pages')
-
-  # Get the top 10 queries in India, sorted by click count, descending.
-  request = {
-      'startDate': flags.start_date,
-      'endDate': flags.end_date,
-      'dimensions': ['query'],
-      'dimensionFilterGroups': [{
-          'filters': [{
-              'dimension': 'country',
-              'expression': 'ind'
-          }]
-      }],
-      'rowLimit': 10
-  }
-  response = execute_request(service, flags.property_uri, request)
-  print_table(response, 'Top queries in India')
-
-  # Group by both country and device.
-  request = {
-      'startDate': flags.start_date,
-      'endDate': flags.end_date,
-      'dimensions': ['country', 'device'],
-      'rowLimit': 10
-  }
-  response = execute_request(service, flags.property_uri, request)
-  print_table(response, 'Group by country and device')
-
+  with open('result1.json', 'w') as f:
+    json.dump(response, f)
+  print_table(response, 'results')  
 
 def execute_request(service, property_uri, request):
   """Executes a searchAnalytics.query request.
